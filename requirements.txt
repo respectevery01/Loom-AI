@@ -1,2 +1,2 @@
-dashscope==1.10.0
+dashscope==1.13.3
 python-dotenv==1.0.0 
