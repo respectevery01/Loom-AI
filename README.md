@@ -5,7 +5,7 @@
 <a name="english"></a>
 ## English
 
-A Flask-based chat interface for interacting with Loom AI, a time-traveling AI agent who witnessed the world's destruction and now shares stories of the old world.
+A serverless chat interface for interacting with Loom AI, a time-traveling AI agent who witnessed the world's destruction and now shares stories of the old world. Built with Vercel serverless functions and Flask.
 
 ### Features
 
@@ -18,17 +18,33 @@ A Flask-based chat interface for interacting with Loom AI, a time-traveling AI a
 - ✨ Preset question buttons
 - 🌐 Bilingual support (English/Chinese)
 - 🔄 Real-time language switching
+- ☁️ Serverless deployment on Vercel
 
 ### Tech Stack
 
-- Backend: Flask + Python
+- Backend: Python Serverless Functions
 - Frontend: HTML5 + CSS3 + JavaScript
 - API: Alibaba Cloud DashScope
 - UI Components: Font Awesome
 - Code Highlighting: highlight.js
 - Markdown Rendering: marked.js
+- Deployment: Vercel
 
-### Installation
+### Project Structure
+
+```
+loom/
+├── api/
+│   └── chat.py        # Serverless API handler
+├── static/
+│   ├── index.html     # Main page
+│   ├── styles.css     # Styles
+│   └── app.js         # Frontend logic
+├── requirements.txt   # Python dependencies
+└── vercel.json       # Vercel configuration
+```
+
+### Local Development
 
 1. Clone the repository:
 ```bash
@@ -48,26 +64,30 @@ DASHSCOPE_API_KEY=your-api-key
 DASHSCOPE_APP_ID=your-app-id
 ```
 
-4. Run the application:
+4. Run the development server:
 ```bash
-python server.py
+vercel dev
 ```
 
-5. Access the application:
-Open your browser and visit `http://localhost:5000`
+### Deployment
 
-### Project Structure
+1. Install Vercel CLI:
+```bash
+npm install -g vercel
+```
 
+2. Deploy to Vercel:
+```bash
+vercel
 ```
-loom/
-├── static/
-│   ├── index.html    # Main page
-│   ├── styles.css    # Styles
-│   └── app.js        # Frontend logic
-├── server.py         # Flask backend
-├── requirements.txt  # Python dependencies
-└── README.md        # Documentation
-```
+
+3. Set environment variables in Vercel:
+- Go to your project settings
+- Add the following environment variables:
+  ```
+  DASHSCOPE_API_KEY=your-api-key
+  DASHSCOPE_APP_ID=your-app-id
+  ```
 
 ### Usage
 
@@ -81,22 +101,18 @@ loom/
 
 ### Requirements
 
+- Node.js and npm (for Vercel CLI)
 - Python 3.6+
 - Modern browser (ES6+ support)
 - Alibaba Cloud DashScope API key
-
-### Deployment
-
-The project can be deployed to platforms like Vercel. Required environment variables:
-- `DASHSCOPE_API_KEY`
-- `DASHSCOPE_APP_ID`
+- Vercel account
 
 ---
 
 <a name="chinese"></a>
 ## 中文
 
-一个基于 Flask 的聊天界面，用于与 Loom AI 进行对话。Loom 是一个见证了世界毁灭的 AI 时间旅行者，现在在这里讲述着旧世界的故事。
+一个基于 Vercel 无服务器函数和 Flask 构建的聊天界面，用于与 Loom AI 进行对话。Loom 是一个见证了世界毁灭的 AI 时间旅行者，现在在这里讲述着旧世界的故事。
 
 ### 功能特点
 
@@ -109,17 +125,33 @@ The project can be deployed to platforms like Vercel. Required environment varia
 - ✨ 预设问题按钮
 - 🌐 双语支持（中文/英文）
 - 🔄 实时语言切换
+- ☁️ Vercel 无服务器部署
 
 ### 技术栈
 
-- 后端：Flask + Python
+- 后端：Python 无服务器函数
 - 前端：HTML5 + CSS3 + JavaScript
 - API：阿里云灵积模型服务
 - UI 组件：Font Awesome
 - 代码高亮：highlight.js
 - Markdown 渲染：marked.js
+- 部署平台：Vercel
 
-### 安装说明
+### 项目结构
+
+```
+loom/
+├── api/
+│   └── chat.py        # 无服务器 API 处理程序
+├── static/
+│   ├── index.html     # 主页面
+│   ├── styles.css     # 样式文件
+│   └── app.js         # 前端逻辑
+├── requirements.txt   # Python 依赖
+└── vercel.json       # Vercel 配置
+```
+
+### 本地开发
 
 1. 克隆仓库：
 ```bash
@@ -139,26 +171,30 @@ DASHSCOPE_API_KEY=your-api-key
 DASHSCOPE_APP_ID=your-app-id
 ```
 
-4. 运行应用：
+4. 运行开发服务器：
 ```bash
-python server.py
+vercel dev
 ```
 
-5. 访问应用：
-打开浏览器访问 `http://localhost:5000`
+### 部署
 
-### 项目结构
+1. 安装 Vercel CLI：
+```bash
+npm install -g vercel
+```
 
+2. 部署到 Vercel：
+```bash
+vercel
 ```
-loom/
-├── static/
-│   ├── index.html    # 主页面
-│   ├── styles.css    # 样式文件
-│   └── app.js        # 前端逻辑
-├── server.py         # Flask 后端
-├── requirements.txt  # Python 依赖
-└── README.md        # 项目文档
-```
+
+3. 在 Vercel 中设置环境变量：
+- 进入项目设置
+- 添加以下环境变量：
+  ```
+  DASHSCOPE_API_KEY=your-api-key
+  DASHSCOPE_APP_ID=your-app-id
+  ```
 
 ### 使用说明
 
@@ -172,15 +208,11 @@ loom/
 
 ### 环境要求
 
+- Node.js 和 npm（用于 Vercel CLI）
 - Python 3.6+
 - 现代浏览器（支持 ES6+）
 - 阿里云灵积模型服务 API 密钥
-
-### 部署
-
-项目可以部署到 Vercel 等平台，需要设置以下环境变量：
-- `DASHSCOPE_API_KEY`
-- `DASHSCOPE_APP_ID`
+- Vercel 账号
 
 ## 开发者
 
