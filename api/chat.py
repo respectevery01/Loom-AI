@@ -2,7 +2,7 @@ from http.server import BaseHTTPRequestHandler
 from http import HTTPStatus
 import json
 import os
-from dashscope import Application
+import dashscope
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -41,7 +41,7 @@ class handler(BaseHTTPRequestHandler):
 
             # Call AI API
             try:
-                response = Application.call(
+                response = dashscope.Application.call(
                     api_key=DASHSCOPE_API_KEY,
                     app_id=DASHSCOPE_APP_ID,
                     prompt=body['prompt']

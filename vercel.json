@@ -25,5 +25,6 @@
     ],
     "env": {
         "PYTHONUNBUFFERED": "1"
-    }
+    },
+    "buildCommand": "pip install --upgrade pip && pip install -r requirements.txt"
 } 
