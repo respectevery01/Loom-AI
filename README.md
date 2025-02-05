@@ -10,25 +10,32 @@ A serverless chat interface for interacting with Loom AI, a time-traveling AI ag
 ### Features
 
 - 💬 Modern chat interface with typing animation
+- 🎨 Beautiful UI with dark theme
+- 📱 Fully responsive design (mobile & desktop)
 - ⌨️ Real-time AI responses with thinking state
-- 🎨 Markdown support with code highlighting
-- 📱 Responsive design
 - 🔄 Chat history with editable titles
-- 🤖 AI role-playing
-- ✨ Preset question buttons
 - 🌐 Bilingual support (English/Chinese)
-- 🔄 Real-time language switching
+- ✨ Preset question buttons
+- 📝 Markdown support with code highlighting
+- 🔄 Message regeneration
+- 📋 One-click copy to clipboard
+- 🎯 Smart context handling
 - ☁️ Serverless deployment on Vercel
+- 🚀 Fast and lightweight
 
 ### Tech Stack
 
-- Backend: Python Serverless Functions
-- Frontend: HTML5 + CSS3 + JavaScript
-- API: Alibaba Cloud DashScope
-- UI Components: Font Awesome
-- Code Highlighting: highlight.js
-- Markdown Rendering: marked.js
-- Deployment: Vercel
+- Backend:
+  - Python Serverless Functions
+  - DashScope API Integration
+  - Flask for Development
+  - Vercel for Deployment
+
+- Frontend:
+  - HTML5 + CSS3 + JavaScript
+  - Font Awesome Icons
+  - highlight.js for Code Highlighting
+  - marked.js for Markdown Rendering
 
 ### Project Structure
 
@@ -48,7 +55,7 @@ loom/
 
 1. Clone the repository:
 ```bash
-git clone [repository-url]
+git clone https://github.com/respectevery01/Loom-AI.git
 cd loom
 ```
 
@@ -61,7 +68,6 @@ pip install -r requirements.txt
 Create `.env` file and add:
 ```
 DASHSCOPE_API_KEY=your-api-key
-DASHSCOPE_APP_ID=your-app-id
 ```
 
 4. Run the development server:
@@ -76,112 +82,98 @@ vercel dev
 npm install -g vercel
 ```
 
-2. Push your code to GitHub:
-```bash
-git add .
-git commit -m "Initial commit"
-git push
-```
-
-3. Import to Vercel:
-- Go to [Vercel Dashboard](https://vercel.com/dashboard)
-- Click "Add New" > "Project"
-- Select your GitHub repository
-- Configure project:
-  - Framework Preset: Other
-  - Root Directory: ./
-  - Build Command: None
-  - Output Directory: static
-  - Install Command: pip install -r requirements.txt
-
-4. Set environment variables in Vercel:
-- Go to project settings > Environment Variables
-- Add the following variables:
-  ```
-  DASHSCOPE_API_KEY=your-api-key
-  DASHSCOPE_APP_ID=your-app-id
-  ```
-- Click "Save"
-
-5. Deploy:
+2. Deploy to Vercel:
 ```bash
 vercel --prod
 ```
 
-6. Verify API Configuration:
-- After deployment, test the API endpoint:
-  ```bash
-  curl -X POST https://your-project.vercel.app/api/chat \
-    -H "Content-Type: application/json" \
-    -d '{"prompt":"Hello"}'
-  ```
-- Check Vercel Function Logs in dashboard if there are issues
+3. Set environment variables in Vercel:
+- Go to project settings > Environment Variables
+- Add `DASHSCOPE_API_KEY`
 
-### Troubleshooting Deployment
+### Features in Detail
 
-1. API Issues:
-- Check Function Logs in Vercel Dashboard
-- Verify environment variables are set correctly
-- Ensure `api/chat.py` is in the correct location
-- Check Python dependencies in `requirements.txt`
+1. Chat Interface:
+   - Real-time typing animation
+   - Message actions (copy, regenerate)
+   - Code syntax highlighting
+   - Markdown rendering
+   - Smooth scrolling
 
-2. Static Files:
-- Verify static files are in the `static` directory
-- Check file paths in `vercel.json`
-- Test local development with `vercel dev`
+2. Mobile Support:
+   - Responsive design
+   - Touch-friendly interface
+   - Collapsible sidebar
+   - Optimized for small screens
 
-3. Common Problems:
-- 500 Error: Check Function Logs and environment variables
-- 404 Error: Verify API route in `vercel.json`
-- CORS Issues: API handler includes correct headers
+3. Language Support:
+   - Real-time language switching
+   - Persistent language preference
+   - Translated UI elements
+   - Bilingual responses
 
-### Usage
+4. Chat Management:
+   - Create new chats
+   - Edit chat titles
+   - Switch between chats
+   - Chat history persistence
 
-1. Loom sends an initial introduction message upon opening
-2. Click preset question buttons for quick interactions
-3. Use the input box for custom messages
-4. Click "New Chat" to start a fresh conversation
-5. View and switch between chat history in the sidebar
-6. Edit chat titles by clicking the edit button
-7. Switch languages using the language selector
+### Browser Support
 
-### Requirements
+- Chrome (recommended)
+- Firefox
+- Safari
+- Edge
+- Mobile browsers
 
-- Node.js and npm (for Vercel CLI)
-- Python 3.6+
-- Modern browser (ES6+ support)
-- Alibaba Cloud DashScope API key
-- Vercel account
+### Contributing
+
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
+
+### License
+
+MIT License
 
 ---
 
 <a name="chinese"></a>
 ## 中文
 
-一个基于 Vercel 无服务器函数和 Flask 构建的聊天界面，用于与 Loom AI 进行对话。Loom 是一个见证了世界毁灭的 AI 时间旅行者，现在在这里讲述着旧世界的故事。
+Loom AI 是一个基于 Vercel 无服务器函数和 Flask 构建的聊天界面。Loom 是一个见证了世界毁灭的 AI 时间旅行者，现在在这里讲述着旧世界的故事。
 
 ### 功能特点
 
-- 💬 现代化的聊天界面，带有打字动画效果
-- ⌨️ AI 实时响应，带有思考状态显示
-- 🎨 支持 Markdown 和代码高亮
-- 📱 响应式设计
+- 💬 现代化聊天界面，带有打字动画
+- 🎨 精美的深色主题界面
+- 📱 完全响应式设计（移动端和桌面端）
+- ⌨️ AI 实时响应，带有思考状态
 - 🔄 可编辑标题的聊天历史
-- 🤖 AI 角色扮演
-- ✨ 预设问题按钮
 - 🌐 双语支持（中文/英文）
-- 🔄 实时语言切换
+- ✨ 预设问题按钮
+- 📝 支持 Markdown 和代码高亮
+- 🔄 消息重新生成功能
+- 📋 一键复制到剪贴板
+- 🎯 智能上下文处理
 - ☁️ Vercel 无服务器部署
+- 🚀 快速且轻量
 
 ### 技术栈
 
-- 后端：Python 无服务器函数
-- 前端：HTML5 + CSS3 + JavaScript
-- API：阿里云灵积模型服务
-- UI 组件：Font Awesome
-- 代码高亮：highlight.js
-- Markdown 渲染：marked.js
-- 部署平台：Vercel
+- 后端：
+  - Python 无服务器函数
+  - DashScope API 集成
+  - Flask 开发环境
+  - Vercel 部署
+
+- 前端：
+  - HTML5 + CSS3 + JavaScript
+  - Font Awesome 图标
+  - highlight.js 代码高亮
+  - marked.js Markdown 渲染
 
 ### 项目结构
 
@@ -201,7 +193,7 @@ loom/
 
 1. 克隆仓库：
 ```bash
-git clone [repository-url]
+git clone https://github.com/respectevery01/Loom-AI.git
 cd loom
 ```
 
@@ -213,8 +205,7 @@ pip install -r requirements.txt
 3. 设置环境变量：
 创建 `.env` 文件并添加：
 ```
-DASHSCOPE_API_KEY=your-api-key
-DASHSCOPE_APP_ID=your-app-id
+DASHSCOPE_API_KEY=你的API密钥
 ```
 
 4. 运行开发服务器：
@@ -229,87 +220,58 @@ vercel dev
 npm install -g vercel
 ```
 
-2. 将代码推送到 GitHub：
-```bash
-git add .
-git commit -m "Initial commit"
-git push
-```
-
-3. 导入到 Vercel：
-- 访问 [Vercel 控制台](https://vercel.com/dashboard)
-- 点击 "Add New" > "Project"
-- 选择你的 GitHub 仓库
-- 配置项目：
-  - Framework Preset（框架预设）：Other
-  - Root Directory（根目录）：./
-  - Build Command（构建命令）：None
-  - Output Directory（输出目录）：static
-  - Install Command（安装命令）：pip install -r requirements.txt
-
-4. 设置环境变量：
-- 进入项目设置 > Environment Variables（环境变量）
-- 添加以下变量：
-  ```
-  DASHSCOPE_API_KEY=你的API密钥
-  DASHSCOPE_APP_ID=你的应用ID
-  ```
-- 点击 "Save"（保存）
-
-5. 部署：
+2. 部署到 Vercel：
 ```bash
 vercel --prod
 ```
 
-6. 验证 API 配置：
-- 部署完成后，测试 API 端点：
-  ```bash
-  curl -X POST https://your-project.vercel.app/api/chat \
-    -H "Content-Type: application/json" \
-    -d '{"prompt":"Hello"}'
-  ```
-- 如果有问题，查看 Vercel 控制台中的 Function Logs（函数日志）
+3. 在 Vercel 中设置环境变量：
+- 进入项目设置 > 环境变量
+- 添加 `DASHSCOPE_API_KEY`
 
-### 部署故障排除
+### 功能详情
 
-1. API 问题：
-- 检查 Vercel 控制台中的函数日志
-- 验证环境变量是否正确设置
-- 确保 `api/chat.py` 在正确的位置
-- 检查 `requirements.txt` 中的 Python 依赖
+1. 聊天界面：
+   - 实时打字动画效果
+   - 消息操作（复制、重新生成）
+   - 代码语法高亮
+   - Markdown 渲染
+   - 平滑滚动
 
-2. 静态文件：
-- 验证静态文件是否在 `static` 目录中
-- 检查 `vercel.json` 中的文件路径
-- 使用 `vercel dev` 测试本地开发
+2. 移动端支持：
+   - 响应式设计
+   - 触摸友好界面
+   - 可折叠侧边栏
+   - 小屏幕优化
 
-3. 常见问题：
-- 500 错误：检查函数日志和环境变量
-- 404 错误：验证 `vercel.json` 中的 API 路由
-- CORS 问题：确保 API 处理程序包含正确的头部
+3. 语言支持：
+   - 实时语言切换
+   - 语言偏好保持
+   - 界面元素翻译
+   - 双语回复
 
-### 使用说明
+4. 聊天管理：
+   - 创建新对话
+   - 编辑对话标题
+   - 切换不同对话
+   - 对话历史保存
 
-1. 打开应用后，Loom 会自动发送初始介绍消息
-2. 点击预设问题按钮快速开始对话
-3. 使用输入框发送自定义消息
-4. 点击"新对话"开始新的对话
-5. 在侧边栏查看和切换历史对话
-6. 点击编辑按钮修改对话标题
-7. 使用语言选择器切换语言
+### 浏览器支持
 
-### 环境要求
+- Chrome（推荐）
+- Firefox
+- Safari
+- Edge
+- 移动端浏览器
 
-- Node.js 和 npm（用于 Vercel CLI）
-- Python 3.6+
-- 现代浏览器（支持 ES6+）
-- 阿里云灵积模型服务 API 密钥
-- Vercel 账号
+### 参与贡献
 
-## 开发者
+1. Fork 本仓库
+2. 创建特性分支
+3. 提交更改
+4. 推送到分支
+5. 创建 Pull Request
 
-本项目由 Jask 开发维护。
-
-## 许可证
+### 许可证
 
 MIT License 
