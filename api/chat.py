@@ -7,9 +7,9 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-# Get environment variables
-API_KEY = os.getenv('DASHSCOPE_API_KEY')
-APP_ID = os.getenv('DASHSCOPE_APP_ID')
+# Get environment variables with correct names
+DASHSCOPE_API_KEY = os.getenv('DASHSCOPE_API_KEY')
+DASHSCOPE_APP_ID = os.getenv('DASHSCOPE_APP_ID')
 
 def handler(request):
     # Enable CORS
@@ -26,7 +26,7 @@ def handler(request):
         body = json.loads(request.body)
         
         # Verify environment variables
-        if not API_KEY or not APP_ID:
+        if not DASHSCOPE_API_KEY or not DASHSCOPE_APP_ID:
             return {
                 "statusCode": 500,
                 "body": json.dumps({
@@ -56,8 +56,8 @@ def handler(request):
         # Call AI API
         try:
             response = Application.call(
-                api_key=API_KEY,
-                app_id=APP_ID,
+                api_key=DASHSCOPE_API_KEY,
+                app_id=DASHSCOPE_APP_ID,
                 prompt=body['prompt']
             )
 
