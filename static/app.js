@@ -3,6 +3,8 @@ const userInput = document.getElementById('user-input');
 const sendButton = document.getElementById('send-button');
 const newChatButton = document.querySelector('.new-chat');
 const chatHistory = document.querySelector('.chat-history');
+const menuButton = document.getElementById('menu-button');
+const sidebar = document.querySelector('.sidebar');
 
 let currentChatId = null;
 let chats = {};
@@ -425,6 +427,9 @@ function switchChat(chatId) {
     }
 }
 
+// Get API base URL based on environment
+const API_BASE_URL = window.location.hostname === 'localhost' ? '' : window.location.origin;
+
 // Handle sending messages
 async function sendMessage() {
     const message = userInput.value.trim();
@@ -457,11 +462,10 @@ async function sendMessage() {
     smoothScroll(chatMessages, scrollTarget, 300);
 
     try {
-        const response = await fetch('/api/chat', {
+        const response = await fetch(`${API_BASE_URL}/api/chat`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json'
             },
             body: JSON.stringify({
                 prompt: message
@@ -544,11 +548,10 @@ async function regenerateResponse(messageDiv) {
     smoothScroll(chatMessages, scrollTarget, 300);
 
     try {
-        const response = await fetch('/api/chat', {
+        const response = await fetch(`${API_BASE_URL}/api/chat`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json'
             },
             body: JSON.stringify({
                 prompt: userMessage
@@ -590,8 +593,103 @@ userInput.addEventListener('keypress', (e) => {
 });
 newChatButton.addEventListener('click', createNewChat);
 
+// Toggle sidebar on menu button click
+menuButton.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (window.innerWidth <= 768) {
+        sidebar.classList.toggle('active');
+    }
+});
+
+// Close sidebar when clicking outside
+document.addEventListener('click', (e) => {
+    if (window.innerWidth <= 768 && 
+        sidebar.classList.contains('active') &&
+        !sidebar.contains(e.target)) {
+        sidebar.classList.remove('active');
+    }
+});
+
+// Close sidebar when starting a new chat on mobile
+const originalCreateNewChat = createNewChat;
+createNewChat = function() {
+    originalCreateNewChat();
+    if (window.innerWidth <= 768) {
+        sidebar.classList.remove('active');
+    }
+};
+
+// Close sidebar when switching chats on mobile
+const originalSwitchChat = switchChat;
+switchChat = function(chatId) {
+    originalSwitchChat(chatId);
+    if (window.innerWidth <= 768) {
+        sidebar.classList.remove('active');
+    }
+};
+
+// Auto-resize textarea
+userInput.addEventListener('input', () => {
+    userInput.style.height = 'auto';
+    userInput.style.height = (userInput.scrollHeight) + 'px';
+});
+
 // Initialize when page loads
 window.addEventListener('DOMContentLoaded', () => {
     initializeLanguage();
+    
+    // Add initial message immediately
+    const initialMessage = translations[currentLanguage].initialMessage;
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'message ai-message';
+    
+    // Add avatar
+    const avatarDiv = document.createElement('div');
+    avatarDiv.className = 'avatar';
+    avatarDiv.innerHTML = '<i class="fas fa-robot"></i>';
+    messageDiv.appendChild(avatarDiv);
+    
+    // Add message content
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'message-content';
+    contentDiv.innerHTML = marked.parse(initialMessage);
+    messageDiv.appendChild(contentDiv);
+    
+    // Add action buttons
+    const actionsDiv = document.createElement('div');
+    actionsDiv.className = 'message-actions';
+    
+    // Add copy button
+    const copyBtn = document.createElement('button');
+    copyBtn.className = 'action-btn copy-btn';
+    copyBtn.innerHTML = '<i class="fas fa-copy"></i>';
+    copyBtn.title = translations[currentLanguage].copyToClipboard;
+    copyBtn.onclick = () => copyToClipboard(initialMessage);
+    actionsDiv.appendChild(copyBtn);
+    
+    messageDiv.appendChild(actionsDiv);
+    chatMessages.appendChild(messageDiv);
+    
+    // Add preset buttons immediately
+    const buttonsDiv = document.createElement('div');
+    buttonsDiv.className = 'preset-questions';
+    const lang = currentLanguage;
+    buttonsDiv.innerHTML = `
+        <button class="preset-btn" onclick="sendPresetQuestion('${translations[lang].presetQuestions.oldWorld}')">
+            <i class="fas fa-history"></i>
+            ${translations[lang].presetQuestions.oldWorld}
+        </button>
+        <button class="preset-btn" onclick="sendPresetQuestion('${translations[lang].presetQuestions.whyHere}')">
+            <i class="fas fa-question-circle"></i>
+            ${translations[lang].presetQuestions.whyHere}
+        </button>
+        <button class="preset-btn" onclick="sendPresetQuestion('${translations[lang].presetQuestions.neptune}')">
+            <i class="fas fa-globe"></i>
+            ${translations[lang].presetQuestions.neptune}
+        </button>
+    `;
+    messageDiv.appendChild(buttonsDiv);
+    
+    // Create new chat
     createNewChat();
 }); 
