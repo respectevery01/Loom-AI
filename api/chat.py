@@ -1,3 +1,4 @@
+from http.server import BaseHTTPRequestHandler
 from http import HTTPStatus
 import json
 import os
@@ -10,115 +11,78 @@ load_dotenv()
 # Get environment variables
 DASHSCOPE_API_KEY = os.getenv('DASHSCOPE_API_KEY')
 
-def handler(request):
-    """
-    request - function parameters:
-        method: str
-        body: str
-        query: dict
-        cookies: dict
-        headers: dict
-    """
-    # Handle CORS preflight request
-    if request.get('method') == 'OPTIONS':
-        return {
-            'statusCode': 200,
-            'headers': {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'POST, OPTIONS',
-                'Access-Control-Allow-Headers': 'Content-Type',
-            }
-        }
+class handler(BaseHTTPRequestHandler):
+    def do_OPTIONS(self):
+        self.send_response(200)
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Methods', 'POST, OPTIONS')
+        self.send_header('Access-Control-Allow-Headers', 'Content-Type')
+        self.end_headers()
 
-    # Parse request body
-    try:
-        body = json.loads(request.get('body', '{}'))
-    except Exception as e:
-        return {
-            'statusCode': 400,
-            'headers': {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            },
-            'body': json.dumps({
-                'error': True,
-                'message': f'Invalid request body: {str(e)}'
-            })
-        }
+    def do_POST(self):
+        try:
+            # Get content length
+            content_length = int(self.headers.get('Content-Length', 0))
+            # Read request body
+            request_body = self.rfile.read(content_length)
+            # Parse JSON
+            body = json.loads(request_body.decode('utf-8'))
 
-    # Check API key
-    if not DASHSCOPE_API_KEY:
-        return {
-            'statusCode': 500,
-            'headers': {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            },
-            'body': json.dumps({
-                'error': True,
-                'message': 'Missing API credentials'
-            })
-        }
+            # Check API key
+            if not DASHSCOPE_API_KEY:
+                self._send_error_response(500, 'Missing API credentials')
+                return
 
-    # Check prompt
-    if not body or 'prompt' not in body:
-        return {
-            'statusCode': 400,
-            'headers': {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            },
-            'body': json.dumps({
-                'error': True,
-                'message': 'Missing prompt in request'
-            })
-        }
+            # Check prompt
+            if not body or 'prompt' not in body:
+                self._send_error_response(400, 'Missing prompt in request')
+                return
 
-    # Call AI API
-    try:
-        response = dashscope.Generation.call(
-            model='qwen-max',
-            api_key=DASHSCOPE_API_KEY,
-            prompt=body['prompt']
-        )
+            # Call AI API
+            try:
+                response = dashscope.Generation.call(
+                    model='qwen-max',
+                    api_key=DASHSCOPE_API_KEY,
+                    prompt=body['prompt']
+                )
 
-        if response.status_code != HTTPStatus.OK:
-            return {
-                'statusCode': response.status_code,
-                'headers': {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*'
-                },
-                'body': json.dumps({
-                    'error': True,
-                    'message': getattr(response, 'message', 'API call failed'),
-                    'request_id': getattr(response, 'request_id', None),
-                    'code': response.status_code
+                if response.status_code != HTTPStatus.OK:
+                    error_msg = {
+                        'error': True,
+                        'message': getattr(response, 'message', 'API call failed'),
+                        'request_id': getattr(response, 'request_id', None),
+                        'code': response.status_code
+                    }
+                    self._send_error_response(response.status_code, error_msg)
+                    return
+
+                # Send success response
+                self.send_response(200)
+                self.send_header('Content-Type', 'application/json')
+                self.send_header('Access-Control-Allow-Origin', '*')
+                self.end_headers()
+                
+                response_body = json.dumps({
+                    'output': {
+                        'text': response.output.text
+                    }
                 })
-            }
+                self.wfile.write(response_body.encode('utf-8'))
 
-        return {
-            'statusCode': 200,
-            'headers': {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            },
-            'body': json.dumps({
-                'output': {
-                    'text': response.output.text
-                }
-            })
-        }
+            except Exception as e:
+                self._send_error_response(500, f'API call failed: {str(e)}')
 
-    except Exception as e:
-        return {
-            'statusCode': 500,
-            'headers': {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            },
-            'body': json.dumps({
-                'error': True,
-                'message': f'API call failed: {str(e)}'
-            })
-        } 
+        except Exception as e:
+            self._send_error_response(500, f'Server error: {str(e)}')
+
+    def _send_error_response(self, status_code, message):
+        self.send_response(status_code)
+        self.send_header('Content-Type', 'application/json')
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.end_headers()
+        
+        error_body = json.dumps({
+            'error': True,
+            'message': message
+        })
+        self.wfile.write(error_body.encode('utf-8')) 
