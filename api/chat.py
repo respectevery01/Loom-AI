@@ -42,6 +42,7 @@ class handler(BaseHTTPRequestHandler):
             # Call AI API
             try:
                 response = dashscope.Generation.call(
+                    model='qwen-max',
                     api_key=DASHSCOPE_API_KEY,
                     app_id=DASHSCOPE_APP_ID,
                     prompt=body['prompt']
