@@ -37,7 +37,7 @@ def handle_error(status_code, message):
         })
     }
 
-def handle(request):
+def handler(request):
     # Handle OPTIONS request
     if request.get('method', '') == 'OPTIONS':
         return handle_options()
