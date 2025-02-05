@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
+# Initialize Flask app
 app = Flask(__name__, static_folder='static')
 CORS(app)
 
@@ -15,24 +16,37 @@ CORS(app)
 API_KEY = os.getenv('DASHSCOPE_API_KEY')
 APP_ID = os.getenv('DASHSCOPE_APP_ID')
 
-if not API_KEY or not APP_ID:
-    raise ValueError("Missing required environment variables. Please check .env file or environment settings.")
-
 # Serve static files
-@app.route('/')
+@app.route('/', methods=['GET'])
 def serve_index():
-    return send_from_directory(app.static_folder, 'index.html')
+    return send_from_directory('static', 'index.html')
 
-@app.route('/<path:path>')
+@app.route('/<path:path>', methods=['GET'])
 def serve_static(path):
-    if os.path.exists(os.path.join(app.static_folder, path)):
-        return send_from_directory(app.static_folder, path)
-    return send_from_directory(app.static_folder, 'index.html')
+    try:
+        if os.path.exists(os.path.join('static', path)):
+            return send_from_directory('static', path)
+        return send_from_directory('static', 'index.html')
+    except Exception as e:
+        return str(e), 500
 
 @app.route('/api/chat', methods=['POST'])
 def chat():
     try:
+        # Verify environment variables
+        if not API_KEY or not APP_ID:
+            return jsonify({
+                'error': True,
+                'message': 'Missing API credentials'
+            }), 500
+
         data = request.json
+        if not data or 'prompt' not in data:
+            return jsonify({
+                'error': True,
+                'message': 'Missing prompt in request'
+            }), 400
+
         response = Application.call(
             api_key=API_KEY,
             app_id=APP_ID,
@@ -59,5 +73,6 @@ def chat():
             'message': str(e)
         }), 500
 
+# Development server
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

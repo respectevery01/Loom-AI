@@ -8,15 +8,15 @@
     ],
     "routes": [
         {
-            "src": "/api/(.*)",
-            "dest": "/server.py"
-        },
-        {
-            "handle": "filesystem"
+            "src": "/api/chat",
+            "dest": "server.py"
         },
         {
             "src": "/(.*)",
-            "dest": "/server.py"
+            "dest": "server.py"
         }
-    ]
+    ],
+    "env": {
+        "PYTHONUNBUFFERED": "1"
+    }
 } 
