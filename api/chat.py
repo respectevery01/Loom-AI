@@ -1,7 +1,7 @@
 from http import HTTPStatus
 import json
 import os
-from dashscope import Application
+import dashscope
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -96,9 +96,9 @@ def handler(request):
         # Call AI API
         try:
             print(f"Calling API with prompt: {body['prompt']}")
-            response = Application.call(
+            response = dashscope.Generation.call(
+                model="qwen-max",
                 api_key=DASHSCOPE_API_KEY,
-                app_id=DASHSCOPE_APP_ID,
                 prompt=body['prompt']
             )
             
