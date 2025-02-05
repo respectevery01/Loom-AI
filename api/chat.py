@@ -10,6 +10,7 @@ load_dotenv()
 
 # Get environment variables
 DASHSCOPE_API_KEY = os.getenv('DASHSCOPE_API_KEY')
+DASHSCOPE_APP_ID = os.getenv('DASHSCOPE_APP_ID', '55b67db129d340749cfce41cbc162ed7')
 
 class handler(BaseHTTPRequestHandler):
     def do_OPTIONS(self):
@@ -41,8 +42,8 @@ class handler(BaseHTTPRequestHandler):
             # Call AI API
             try:
                 response = dashscope.Generation.call(
-                    model='qwen-max',
                     api_key=DASHSCOPE_API_KEY,
+                    app_id=DASHSCOPE_APP_ID,
                     prompt=body['prompt']
                 )
 
