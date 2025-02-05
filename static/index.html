@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loom AI</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <button class="new-chat">
+                    <i class="fas fa-plus"></i> New Chat
+                </button>
+                <div class="language-selector">
+                    <select id="language-select" title="Select Language">
+                        <option value="en">English</option>
+                        <option value="zh">中文</option>
+                    </select>
+                </div>
+            </div>
+            <div class="chat-history">
+                <!-- Chat history items will be added here -->
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div class="chat-container">
+                <div id="chat-messages" class="messages"></div>
+            </div>
+            
+            <div class="input-container">
+                <div class="input-box">
+                    <textarea 
+                        id="user-input" 
+                        placeholder="Send a message..." 
+                        rows="1"
+                        autofocus
+                    ></textarea>
+                    <button id="send-button">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="disclaimer">
+                    Loom AI may make mistakes. Please verify important information.
+                </div>
+            </div>
+        </main>
+    </div>
+    <script>
+        marked.setOptions({
+            highlight: function(code, lang) {
+                if (lang && hljs.getLanguage(lang)) {
+                    return hljs.highlight(code, { language: lang }).value;
+                }
+                return hljs.highlightAuto(code).value;
+            },
+            breaks: true,
+            gfm: true
+        });
+    </script>
+    <script src="app.js"></script>
+</body>
+</html> 
