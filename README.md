@@ -76,18 +76,64 @@ vercel dev
 npm install -g vercel
 ```
 
-2. Deploy to Vercel:
+2. Push your code to GitHub:
 ```bash
-vercel
+git add .
+git commit -m "Initial commit"
+git push
 ```
 
-3. Set environment variables in Vercel:
-- Go to your project settings
-- Add the following environment variables:
+3. Import to Vercel:
+- Go to [Vercel Dashboard](https://vercel.com/dashboard)
+- Click "Add New" > "Project"
+- Select your GitHub repository
+- Configure project:
+  - Framework Preset: Other
+  - Root Directory: ./
+  - Build Command: None
+  - Output Directory: static
+  - Install Command: pip install -r requirements.txt
+
+4. Set environment variables in Vercel:
+- Go to project settings > Environment Variables
+- Add the following variables:
   ```
   DASHSCOPE_API_KEY=your-api-key
   DASHSCOPE_APP_ID=your-app-id
   ```
+- Click "Save"
+
+5. Deploy:
+```bash
+vercel --prod
+```
+
+6. Verify API Configuration:
+- After deployment, test the API endpoint:
+  ```bash
+  curl -X POST https://your-project.vercel.app/api/chat \
+    -H "Content-Type: application/json" \
+    -d '{"prompt":"Hello"}'
+  ```
+- Check Vercel Function Logs in dashboard if there are issues
+
+### Troubleshooting Deployment
+
+1. API Issues:
+- Check Function Logs in Vercel Dashboard
+- Verify environment variables are set correctly
+- Ensure `api/chat.py` is in the correct location
+- Check Python dependencies in `requirements.txt`
+
+2. Static Files:
+- Verify static files are in the `static` directory
+- Check file paths in `vercel.json`
+- Test local development with `vercel dev`
+
+3. Common Problems:
+- 500 Error: Check Function Logs and environment variables
+- 404 Error: Verify API route in `vercel.json`
+- CORS Issues: API handler includes correct headers
 
 ### Usage
 
@@ -183,18 +229,64 @@ vercel dev
 npm install -g vercel
 ```
 
-2. 部署到 Vercel：
+2. 将代码推送到 GitHub：
 ```bash
-vercel
+git add .
+git commit -m "Initial commit"
+git push
 ```
 
-3. 在 Vercel 中设置环境变量：
-- 进入项目设置
-- 添加以下环境变量：
+3. 导入到 Vercel：
+- 访问 [Vercel 控制台](https://vercel.com/dashboard)
+- 点击 "Add New" > "Project"
+- 选择你的 GitHub 仓库
+- 配置项目：
+  - Framework Preset（框架预设）：Other
+  - Root Directory（根目录）：./
+  - Build Command（构建命令）：None
+  - Output Directory（输出目录）：static
+  - Install Command（安装命令）：pip install -r requirements.txt
+
+4. 设置环境变量：
+- 进入项目设置 > Environment Variables（环境变量）
+- 添加以下变量：
   ```
-  DASHSCOPE_API_KEY=your-api-key
-  DASHSCOPE_APP_ID=your-app-id
+  DASHSCOPE_API_KEY=你的API密钥
+  DASHSCOPE_APP_ID=你的应用ID
   ```
+- 点击 "Save"（保存）
+
+5. 部署：
+```bash
+vercel --prod
+```
+
+6. 验证 API 配置：
+- 部署完成后，测试 API 端点：
+  ```bash
+  curl -X POST https://your-project.vercel.app/api/chat \
+    -H "Content-Type: application/json" \
+    -d '{"prompt":"Hello"}'
+  ```
+- 如果有问题，查看 Vercel 控制台中的 Function Logs（函数日志）
+
+### 部署故障排除
+
+1. API 问题：
+- 检查 Vercel 控制台中的函数日志
+- 验证环境变量是否正确设置
+- 确保 `api/chat.py` 在正确的位置
+- 检查 `requirements.txt` 中的 Python 依赖
+
+2. 静态文件：
+- 验证静态文件是否在 `static` 目录中
+- 检查 `vercel.json` 中的文件路径
+- 使用 `vercel dev` 测试本地开发
+
+3. 常见问题：
+- 500 错误：检查函数日志和环境变量
+- 404 错误：验证 `vercel.json` 中的 API 路由
+- CORS 问题：确保 API 处理程序包含正确的头部
 
 ### 使用说明
 
