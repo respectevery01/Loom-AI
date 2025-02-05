@@ -4,12 +4,24 @@
         {
             "src": "server.py",
             "use": "@vercel/python"
+        },
+        {
+            "src": "static/**",
+            "use": "@vercel/static"
         }
     ],
     "routes": [
         {
-            "src": "/(.*)",
+            "src": "/static/(.*)",
+            "dest": "/static/$1"
+        },
+        {
+            "src": "/api/(.*)",
             "dest": "server.py"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/static/index.html"
         }
     ]
 } 

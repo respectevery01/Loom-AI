@@ -18,14 +18,6 @@ APP_ID = os.getenv('DASHSCOPE_APP_ID')
 if not API_KEY or not APP_ID:
     raise ValueError("Missing required environment variables. Please check .env file or environment settings.")
 
-@app.route('/')
-def serve_index():
-    return send_from_directory('static', 'index.html')
-
-@app.route('/<path:filename>')
-def serve_static(filename):
-    return send_from_directory('static', filename)
-
 @app.route('/api/chat', methods=['POST'])
 def chat():
     try:
@@ -56,5 +48,15 @@ def chat():
             'message': str(e)
         }), 500
 
+# For local development
 if __name__ == '__main__':
+    # Serve static files in development
+    @app.route('/')
+    def serve_index():
+        return send_from_directory('static', 'index.html')
+
+    @app.route('/<path:filename>')
+    def serve_static(filename):
+        return send_from_directory('static', filename)
+        
     app.run(debug=True, port=5000)
