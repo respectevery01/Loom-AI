@@ -425,9 +425,6 @@ function switchChat(chatId) {
     }
 }
 
-// Get API base URL based on environment
-const API_BASE_URL = window.location.hostname === 'localhost' ? '' : window.location.origin;
-
 // Handle sending messages
 async function sendMessage() {
     const message = userInput.value.trim();
@@ -460,7 +457,7 @@ async function sendMessage() {
     smoothScroll(chatMessages, scrollTarget, 300);
 
     try {
-        const response = await fetch(`${API_BASE_URL}/api/chat`, {
+        const response = await fetch('/api/chat', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -546,7 +543,7 @@ async function regenerateResponse(messageDiv) {
     smoothScroll(chatMessages, scrollTarget, 300);
 
     try {
-        const response = await fetch(`${API_BASE_URL}/api/chat`, {
+        const response = await fetch('/api/chat', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

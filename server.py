@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 CORS(app)
 
 # Get environment variables
@@ -17,6 +17,17 @@ APP_ID = os.getenv('DASHSCOPE_APP_ID')
 
 if not API_KEY or not APP_ID:
     raise ValueError("Missing required environment variables. Please check .env file or environment settings.")
+
+# Serve static files
+@app.route('/')
+def serve_index():
+    return send_from_directory(app.static_folder, 'index.html')
+
+@app.route('/<path:path>')
+def serve_static(path):
+    if os.path.exists(os.path.join(app.static_folder, path)):
+        return send_from_directory(app.static_folder, path)
+    return send_from_directory(app.static_folder, 'index.html')
 
 @app.route('/api/chat', methods=['POST'])
 def chat():
@@ -48,15 +59,5 @@ def chat():
             'message': str(e)
         }), 500
 
-# For local development
 if __name__ == '__main__':
-    # Serve static files in development
-    @app.route('/')
-    def serve_index():
-        return send_from_directory('static', 'index.html')
-
-    @app.route('/<path:filename>')
-    def serve_static(filename):
-        return send_from_directory('static', filename)
-        
     app.run(debug=True, port=5000)

@@ -4,24 +4,19 @@
         {
             "src": "server.py",
             "use": "@vercel/python"
-        },
-        {
-            "src": "static/**",
-            "use": "@vercel/static"
         }
     ],
     "routes": [
         {
-            "src": "/static/(.*)",
-            "dest": "/static/$1"
+            "src": "/api/(.*)",
+            "dest": "/server.py"
         },
         {
-            "src": "/api/(.*)",
-            "dest": "server.py"
+            "handle": "filesystem"
         },
         {
             "src": "/(.*)",
-            "dest": "/static/index.html"
+            "dest": "/server.py"
         }
     ]
 } 
