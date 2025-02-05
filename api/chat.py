@@ -12,6 +12,9 @@ load_dotenv()
 API_KEY = os.getenv('DASHSCOPE_API_KEY')
 APP_ID = os.getenv('DASHSCOPE_APP_ID')
 
+print(f"API_KEY exists: {bool(API_KEY)}")
+print(f"APP_ID exists: {bool(APP_ID)}")
+
 class handler(BaseHTTPRequestHandler):
     def do_OPTIONS(self):
         self.send_response(200)
