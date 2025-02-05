@@ -9,48 +9,31 @@ load_dotenv()
 
 # Get environment variables with correct names
 DASHSCOPE_API_KEY = os.getenv('DASHSCOPE_API_KEY')
-DASHSCOPE_APP_ID = os.getenv('DASHSCOPE_APP_ID')
 
 # Debug print
 print(f"Environment variables loaded:")
 print(f"DASHSCOPE_API_KEY exists: {bool(DASHSCOPE_API_KEY)}")
-print(f"DASHSCOPE_APP_ID exists: {bool(DASHSCOPE_APP_ID)}")
 
-def handler(request):
-    print(f"Received request method: {request.method}")
-    print(f"Request headers: {dict(request.headers)}")
-    
-    # Enable CORS
+async def handler(request):
     if request.method == "OPTIONS":
-        headers = {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "POST, OPTIONS",
-            "Access-Control-Allow-Headers": "Content-Type",
+        return {
+            "status": 200,
+            "headers": {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "POST, OPTIONS",
+                "Access-Control-Allow-Headers": "Content-Type",
+            }
         }
-        return {"statusCode": 200, "headers": headers}
 
     try:
         # Get request body
         try:
-            # Try different ways to get the request body
-            if hasattr(request, 'json'):
-                print("Using request.json")
-                body = request.json
-            elif hasattr(request, 'body'):
-                print("Using request.body")
-                if isinstance(request.body, str):
-                    body = json.loads(request.body)
-                else:
-                    body = json.loads(request.body.decode('utf-8'))
-            else:
-                print("No recognized body format")
-                body = {}
-            
+            body = json.loads(request.body.decode())
             print(f"Parsed request body: {body}")
         except Exception as body_error:
             print(f"Error parsing request body: {str(body_error)}")
             return {
-                "statusCode": 400,
+                "status": 400,
                 "body": json.dumps({
                     "error": True,
                     "message": f"Invalid request body: {str(body_error)}"
@@ -62,11 +45,11 @@ def handler(request):
             }
         
         # Verify environment variables
-        if not DASHSCOPE_API_KEY or not DASHSCOPE_APP_ID:
+        if not DASHSCOPE_API_KEY:
             error_msg = "Missing API credentials"
             print(f"Error: {error_msg}")
             return {
-                "statusCode": 500,
+                "status": 500,
                 "body": json.dumps({
                     "error": True,
                     "message": error_msg
@@ -82,7 +65,7 @@ def handler(request):
             error_msg = "Missing prompt in request"
             print(f"Error: {error_msg}")
             return {
-                "statusCode": 400,
+                "status": 400,
                 "body": json.dumps({
                     "error": True,
                     "message": error_msg
@@ -113,7 +96,7 @@ def handler(request):
                 }
                 print(f"API Error: {error_msg}")
                 return {
-                    "statusCode": response.status_code,
+                    "status": response.status_code,
                     "body": json.dumps(error_msg),
                     "headers": {
                         "Content-Type": "application/json",
@@ -128,7 +111,7 @@ def handler(request):
             }
             print(f"Success response: {result}")
             return {
-                "statusCode": 200,
+                "status": 200,
                 "body": json.dumps(result),
                 "headers": {
                     "Content-Type": "application/json",
@@ -140,7 +123,7 @@ def handler(request):
             error_msg = f"API call failed: {str(api_error)}"
             print(f"Error: {error_msg}")
             return {
-                "statusCode": 500,
+                "status": 500,
                 "body": json.dumps({
                     "error": True,
                     "message": error_msg
@@ -155,7 +138,7 @@ def handler(request):
         error_msg = f"Server error: {str(e)}"
         print(f"Error: {error_msg}")
         return {
-            "statusCode": 500,
+            "status": 500,
             "body": json.dumps({
                 "error": True,
                 "message": error_msg
