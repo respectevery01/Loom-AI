@@ -2,18 +2,25 @@
     "version": 2,
     "builds": [
         {
-            "src": "server.py",
+            "src": "api/*.py",
             "use": "@vercel/python"
+        },
+        {
+            "src": "static/**",
+            "use": "@vercel/static"
         }
     ],
     "routes": [
         {
             "src": "/api/chat",
-            "dest": "server.py"
+            "dest": "/api/chat.py"
+        },
+        {
+            "handle": "filesystem"
         },
         {
             "src": "/(.*)",
-            "dest": "server.py"
+            "dest": "/static/$1"
         }
     ],
     "env": {
